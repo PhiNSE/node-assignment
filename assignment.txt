@@ -1,0 +1,46 @@
+Assignment 1 - NodeJS API, mongoDB
+
+Tạo APIs thực hiện CRUD trên 2 collection:
+
+Category
+
+
+Product
+
+
+Trong đó một category có thể có nhiều products.
+
+////////
+Assignment 2 - JWT
+
+Dưa trên code của bài Assignment 1, sinh viên thêm / cập nhật API liên quan tới:
+
+Quản lý tài khoản User, User Role
+
+
+Giới hạn quyền truy cập của User đối với các API create, update, delete.
+
+
+///////
+Assignment 3 -Template Engine (MVCc:\Users\ADMIN\Downloads\SDN302-BE-main (1).zip
+
+Dưa trên code của bài Assignment 2, sinh viên thêm code liên quan tới template engine để xây dựng 1 website. Bao gồm:
+
+Trang login
+
+
+Với quyền admin, CRUD trên product và category. Update hình ảnh của product...
+
+
+Với quyền user, xem product và category.
+
+
+Lưu ý:
+
+Code của Asm 1 và Asm 2 vẫn chạy được. Nghĩa là các code liên quan tới API, JWT vẫn có thể tested được trên postman. (vd: http://locahost:3000/api)
+
+
+Code của Web (MVC) nằm ở một route riêng (vd: http://localhost:3000/dashboard)
+
+
+Lưu ý phần login, check tài khoản, cấp token cũng nên tách riêng thành một middle ware mới. Tránh trường hợp code xong phần login của web, thì api không thể login được nữa.
