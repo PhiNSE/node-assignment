@@ -1,0 +1,282 @@
+<style>
+  /* General Page Styles */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 20px;
+    color: #343a40;
+  }
+
+  /* Headings Styles */
+  h1,
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Table Styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  table th,
+  table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+  }
+
+  thead th {
+    background-color: #007bff;
+    color: #ffffff;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f1f3f5;
+  }
+
+  tbody tr:hover {
+    background-color: #e9ecef;
+  }
+
+  /* Empty State */
+  tbody tr td[colspan="5"] {
+    text-align: center;
+    color: #868e96;
+    font-style: italic;
+  }
+
+  /* Button Styles */
+  .button {
+    background-color: #007bff;
+    /* Primary color for default */
+    color: #ffffff;
+    border: none;
+    /* Remove border */
+    /* padding: 10px 16px; */
+    /* Increased padding for a larger click area */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-right: 5px;
+    /* Space between buttons */
+    font-size: 14px;
+    font-weight: 600;
+    /* Slightly bolder text */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+  }
+
+  .button:focus {
+    outline: none;
+    /* Remove focus outline */
+  }
+
+  .button:hover {
+    transform: translateY(-2px);
+    /* Slight lift effect on hover */
+  }
+
+  /* Delete Button Specific Styles */
+  .delete-button {
+    background-color: #dc3545;
+    /* Danger color for delete */
+  }
+
+  .delete-button:hover {
+    background-color: #c82333;
+    /* Darker on hover */
+  }
+
+  /* Update Button Specific Styles */
+  .update-button {
+    background-color: #28a745;
+    /* Success color for update */
+  }
+
+  .update-button:hover {
+    background-color: #218838;
+    /* Darker on hover */
+  }
+
+  /* Form Styles */
+  form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  form label {
+    font-weight: bold;
+    color: #495057;
+  }
+
+  form input,
+  form textarea,
+  form select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+
+  form button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  form button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Modal Styles */
+  #updateFormModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  #updateForm {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: auto;
+  }
+
+  #updateForm h2 {
+    margin-bottom: 20px;
+    color: #007bff;
+  }
+
+  #updateForm button {
+    margin-top: 10px;
+  }
+</style>
+
+<script>
+  function openUpdateForm(productId, name, description, price, categoryId) {
+    const form = document.getElementById("updateForm");
+    form.action = `/products/update/${productId}`;
+
+    document.getElementById("updateName").value = name;
+    document.getElementById("updateDescription").value = description;
+    document.getElementById("updatePrice").value = price;
+    document.getElementById("updateCategory").value = categoryId;
+
+    document.getElementById("updateFormModal").style.display = "block";
+  }
+
+  function closeUpdateForm() {
+    document.getElementById("updateFormModal").style.display = "none";
+  }
+</script>
+<a href="/admin">Back to dashboard</a>
+<h1>Danh sách sản phẩm</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Category</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (products.length> 0) { %>
+      <% products.forEach(product=> { %>
+        <tr>
+          <td>
+            <%= product.name %>
+          </td>
+          <td>
+            <%= product.description %>
+          </td>
+          <td>
+            <%= product.price %>
+          </td>
+          <td>
+            <%= product.category ? product.category.name : 'Không có danh mục' %>
+          </td>
+          <td>
+            <form action="/products/delete/<%= product._id %>" method="POST" style="display:inline ">
+              <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+            </form>
+            <button
+              onclick="openUpdateForm('<%= product._id %>', '<%= product.name %>', '<%= product.description %>', '<%= product.price %>', '<%= product.category ? product.category._id : '' %>')">Cập
+              nhật</button>
+          </td>
+        </tr>
+        <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="5">Không có sản phẩm nào</td>
+            </tr>
+            <% } %>
+  </tbody>
+</table>
+
+<h2>Thêm sản phẩm mới</h2>
+<form action="/products/create" method="POST">
+  <label for="name">Product Name:</label><br />
+  <input type="text" id="name" name="name" required><br />
+  <label for="description">Description:</label><br />
+  <textarea id="description" name="description"></textarea><br />
+  <label for="price">Price:</label><br />
+  <input type="number" id="price" name="price" required><br />
+  <label for="category">Category:</label><br />
+  <select id="category" name="category">
+    <% categories.forEach(category=> { %>
+      <option value="<%= category._id %>">
+        <%= category.name %>
+      </option>
+      <% }) %>
+  </select><br /><br />
+  <button type="submit">Thêm</button>
+</form>
+
+<div id="updateFormModal" style="display:none;">
+  <form id="updateForm" action method="POST">
+    <h2>Cập nhật sản phẩm</h2>
+    <label for="updateName">Product Name:</label><br />
+    <input type="text" id="updateName" name="name" required><br />
+    <label for="updateDescription">Description:</label><br />
+    <textarea id="updateDescription" name="description"></textarea><br />
+    <label for="updatePrice">Price:</label><br />
+    <input type="number" id="updatePrice" name="price" required><br />
+    <label for="updateCategory">Category:</label><br />
+    <select id="updateCategory" name="category">
+      <% categories.forEach(category=> { %>
+        <option value="<%= category._id %>">
+          <%= category.name %>
+        </option>
+        <% }) %>
+    </select><br /><br />
+    <button type="submit">Cập nhật</button>
+    <button type="button" onclick="closeUpdateForm()">Đóng</button>
+  </form>
+</div>

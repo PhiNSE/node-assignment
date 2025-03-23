@@ -1,13 +1,21 @@
 const mongoose = require("mongoose");
+const emailRegexConstant = require("../constant/email-regex.constant");
 
 const userSchema = new mongoose.Schema(
   {
-    _id: mongoose.Schema.Types.ObjectId,
     username: {
       type: String,
       required: true,
       unique: true,
       minlength: 5,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      validator: (value) => {
+        return emailRegexConstant.test(value);
+      },
     },
     password: {
       type: String,

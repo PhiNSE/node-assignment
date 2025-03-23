@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const categoryModel = require("../../models/categories");
+const {
+  adminRoleMiddleware,
+} = require("../../middleware/admin.role.middleware");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -12,7 +15,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", adminRoleMiddleware, async (req, res, next) => {
   try {
     const category = new categoryModel(req.body);
     await category.save();
@@ -22,7 +25,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", adminRoleMiddleware, async (req, res, next) => {
   try {
     const category = await categoryModel.findByIdAndUpdate(
       req.params.id,
@@ -37,7 +40,7 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", adminRoleMiddleware, async (req, res, next) => {
   try {
     const category = await categoryModel.findByIdAndDelete(req.params.id);
     res.json(category);

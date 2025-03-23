@@ -2,7 +2,9 @@ const jwt = require("jsonwebtoken");
 const { getEnv } = require("../helpers/dotenv.helper");
 const secretKey = getEnv("SECRET_KEY");
 
-const authMiddleware = (req, res, next) => {
+const userRolesConstant = require("../constant/user-roles.constant");
+
+const adminRoleMiddleware = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
   console.log("Authorization header:", req.header("Authorization"));
   console.log("Token nhận được từ header:", token);
@@ -18,6 +20,11 @@ const authMiddleware = (req, res, next) => {
     const decoded = jwt.verify(token, secretKey);
     req.user = decoded;
     console.log("Token hợp lệ, user:", req.user);
+    if (req.user.role !== userRolesConstant.admin) {
+      return res
+        .status(403)
+        .json({ message: "Access denied, admin role required" });
+    }
     next();
   } catch (error) {
     console.error("Token verification failed:", error.message);
@@ -25,4 +32,4 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports.authMiddleware = authMiddleware;
+module.exports.adminRoleMiddleware = adminRoleMiddleware;

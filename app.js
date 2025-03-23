@@ -4,12 +4,15 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
-const swaggerUi = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
 
-var indexRouter = require("./routes/ui/index");
-var usersApiRouter = require("./routes/api/users.controller");
+const usersApiRouter = require("./routes/api/users.controller");
 const userRolesApiRouter = require("./routes/api/user-roles.controller");
+const categoryApiRouter = require("./routes/api/categories.controller");
+const productApiRouter = require("./routes/api/products.controller");
+const loginUiRouter = require("./routes/ui/login.ui");
+const adminUiRouter = require("./routes/ui/admin.ui");
+const productsUiRouter = require("./routes/ui/products.ui");
+const categoriesUiRouter = require("./routes/ui/categories.ui");
 
 var app = express();
 
@@ -35,31 +38,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    myapi: "3.0.0",
-    info: {
-      title: "My API",
-      version: "1.0.0",
-      description: "API documentation",
-    },
-    servers: [
-      {
-        url: "http://localhost:3000",
-      },
-    ],
-  },
-  apis: ["./routes/api/*.js"],
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
 //apis
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use("/", indexRouter);
+app.use("/", loginUiRouter);
 app.use("/api/user-roles", userRolesApiRouter);
 app.use("/api/users", usersApiRouter);
+app.use("/api/categories", categoryApiRouter);
+app.use("/api/products", productApiRouter);
+app.use("/admin", adminUiRouter);
+app.use("/products", productsUiRouter);
+app.use("/categories", categoriesUiRouter);
 
 //ui
+app.use(loginUiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

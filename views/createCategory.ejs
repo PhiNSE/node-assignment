@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<style>
+  /* Basic reset */
+  /* Basic reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+  }
+
+  form div {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  a {
+    display: block;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm mới Danh mục</title>
+  <link rel="stylesheet" />
+  <!-- Đường dẫn đến file CSS của bạn -->
+</head>
+
+<body>
+  <h1>Thêm mới Danh mục</h1>
+  <form action="/categories/create" method="POST">
+    <div>
+      <label for="name">Tên Danh mục:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="description">Mô tả:</label>
+      <textarea id="description" name="description" required></textarea>
+    </div>
+    <button type="submit">Thêm mới</button>
+  </form>
+  <a href="/categories">Quay lại</a>
+</body>
+
+</html>
